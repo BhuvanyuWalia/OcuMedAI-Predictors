@@ -1,19 +1,22 @@
 import os
-import requests
-from zipfile import ZipFile
+from huggingface_hub import hf_hub_download
 
-MODEL_URL = "https://huggingface.co/BhuvanyuWalia/ocumedai-models/resolve/main/predictors.zip?download=true"
-ZIP_PATH = "predictors.zip"
-EXTRACT_PATH = "predictors"
+model_dir = "predictors"
+os.makedirs(model_dir, exist_ok=True)
 
-if not os.path.exists(EXTRACT_PATH):
-    print("Downloading models from Hugging Face...")
-    r = requests.get(MODEL_URL)
-    r.raise_for_status()  # Raises HTTPError if not 200
-    with open(ZIP_PATH, "wb") as f:
-        f.write(r.content)
+files = {
+    "DR_predictor.h5": "DR_predictor.h5",
+    "HTN_InceptionV3_regression.h5": "HTN_InceptionV3_regression.h5",
+    "hba1c_xgboost_predictor.pkl": "hba1c_xgboost_predictor.pkl",
+    "hba1c_scaler.pkl": "hba1c_scaler.pkl"
+}
 
-    with ZipFile(ZIP_PATH, 'r') as zip_ref:
-        zip_ref.extractall(EXTRACT_PATH)
-
-    print("Models downloaded and extracted.")
+for local_name, repo_file in files.items():
+    print(f"Downloading {local_name}...")
+    output_path = os.path.join(model_dir, local_name)
+    hf_hub_download(
+        repo_id="bwalia5/ocumedai-models",
+        filename=repo_file,
+        local_dir=model_dir,
+        local_dir_use_symlinks=False
+    )
