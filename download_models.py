@@ -1,20 +1,17 @@
-import gdown
 import os
+import requests
+from zipfile import ZipFile
 
-model_dir = "predictors"
-os.makedirs(model_dir, exist_ok=True)
+MODEL_URL = "https://huggingface.co/BhuvanyuWalia/ocumedai-models/resolve/main/predictors.zip"
+ZIP_PATH = "predictors.zip"
+EXTRACT_PATH = "predictors"
 
-files = {
-    "DR_predictor.h5": "1f4PContWp4N324gA9USqBRoIaqTgG4xI",
-    "HTN_InceptionV3_regression.h5": "10UtQJlJwPMABGhoyKiJ3Ik4a1ixnbaau",
-    "hba1c_xgboost_predictor.pkl": "1ZUlUIDKNyJUekyMioE4HvUBscmNSzPtW",
-    "hba1c_scaler.pkl": "1YTURQDXWtXJDFX7NrBKlRjJsVF-rU4gO",
-}
+if not os.path.exists(EXTRACT_PATH):
+    print("Downloading models from Hugging Face...")
+    r = requests.get(MODEL_URL)
+    with open(ZIP_PATH, "wb") as f:
+        f.write(r.content)
 
-for filename, file_id in files.items():
-    url = f"https://drive.google.com/uc?id={file_id}&export=download"
-    out_path = os.path.join(model_dir, filename)
-    if not os.path.exists(out_path):
-        print(f"Downloading {filename}...")
-        gdown.download(url, out_path, quiet=False, use_cookies=False)
-
+    with ZipFile(ZIP_PATH, 'r') as zip_ref:
+        zip_ref.extractall(EXTRACT_PATH)
+    print("Models downloaded and extracted.")
