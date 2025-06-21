@@ -1,4 +1,9 @@
 # ocumed_api.py
+import os
+
+if not os.path.exists("predictors/DR_predictor.h5"):
+    import download_models  # This will trigger download only if not present
+
 from fastapi import FastAPI, File, UploadFile, Form
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
