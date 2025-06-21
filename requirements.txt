@@ -3,7 +3,7 @@ uvicorn
 pillow
 scikit-learn
 opencv-python
-tensorflow
+tensorflow-cpu
 xgboost
 numpy
 pandas
