@@ -12,7 +12,9 @@ files = {
 }
 
 for filename, file_id in files.items():
+    url = f"https://drive.google.com/uc?id={file_id}&export=download"
     out_path = os.path.join(model_dir, filename)
     if not os.path.exists(out_path):
         print(f"Downloading {filename}...")
-        gdown.download(id=file_id, output=out_path, quiet=False, use_cookies=False)
+        gdown.download(url, out_path, quiet=False, use_cookies=False)
+
