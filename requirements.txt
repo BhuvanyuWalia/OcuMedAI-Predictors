@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+pillow
+scikit-learn
+opencv-python
+tensorflow
+xgboost
+numpy
+pandas
+python-multipart
+joblib
